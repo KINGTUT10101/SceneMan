@@ -6,7 +6,7 @@ local sceneMan = {
     buffer = {}, -- Stores the scene stack when the original scene stack is disabled
     frozen = false, -- If true, the buffer will be used instead of the original stack
     lockLevel = 0, -- They highest level of the stack that is locked
-    version = "1.4", -- The used version of Scene Man
+    version = "1.4.1", -- The used version of Scene Man
 }
 
 --- A helper funciton that returns either the buffer or the stack based on the value of menuMan.frozen.
