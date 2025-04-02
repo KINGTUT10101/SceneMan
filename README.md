@@ -36,6 +36,9 @@ See the [Freezing](https://github.com/KINGTUT10101/SceneMan/wiki/Freezing) page 
 *   Version 1.4:
     *   Added a function for getting the current lock level value.
     *   Added a function for clearing the unlocked portion of the stack, aka all the scenes above the current lock level value.
+ *   Version 1.4.1:
+    *   A scene's load method will no longer automatically pass the sceneMan library as the first argument
+    *   Fixed a bug/oversight where the varargs were not passed to a scene's delete method
 
 ### Documentation:
 
