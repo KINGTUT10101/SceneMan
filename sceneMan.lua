@@ -112,7 +112,7 @@ function sceneMan:newScene (name, scene, ...)
     self.scenes[name] = scene
     self.scenes[name].name = name
     if self.scenes[name].load ~= nil then
-        self.scenes[name]:load (self, ...)
+        self.scenes[name]:load (...)
     end
 end
 
@@ -124,7 +124,7 @@ end
 function sceneMan:deleteScene (name, ...)
     if self.scenes[name] ~= nil then
         if self.scenes[name].delete ~= nil then
-            self.scenes[name]:delete ()
+            self.scenes[name]:delete (...)
         end
         self.scenes[name] = nil
     end
