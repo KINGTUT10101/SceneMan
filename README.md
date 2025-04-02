@@ -39,6 +39,7 @@ See the [Freezing](https://github.com/KINGTUT10101/SceneMan/wiki/Freezing) page 
 *   Version 1.4.1:
     *   A scene's load method will no longer automatically pass the sceneMan library as the first argument.
     *   Fixed a bug/oversight where the varargs were not passed to a scene's delete method.
+    *   Added EmmyLua style comments to the library.
 
 ### Documentation:
 
