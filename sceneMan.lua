@@ -15,7 +15,7 @@ local sceneMan = {
     ---@type integer The highest level of the stack that is locked.
     lockLevel = 0,
     ---@type string The version of Scene Manager being used.
-    version = "1.4.1",
+    version = "1.4.2",
 }
 
 --- Returns either the buffer or the stack based on the value of `sceneMan.frozen`.
@@ -51,11 +51,6 @@ function sceneMan:unfreeze ()
 end
 
 --- Saves the current contents of the stack so it can be restored later.
--- This will save the frozen buffer if the stack is frozen
--- This will not modify the current stack in any way
--- @param id (string) A unique ID that will be used to identify the saved stack. It will override anything currently stored at that ID
-
---- Saves the current contents of the stack so it can be restored later.
 --- This will save the frozen buffer if the stack is frozen.
 --- This will not modify the current stack in any way.
 ---@param id string A unique ID to identify the saved stack. Overrides any existing entry at this ID.
@@ -69,12 +64,6 @@ function sceneMan:saveStack (id)
 
     self.saved[id] = savedStack
 end
-
---- Loads a stack from the saved table.
--- This will call the loaded scenes' "whenAdded" methods
--- @param id (string) A unique ID that identifies the stack that should be restored
--- @param ... (varargs) A list of values that will be passed to the event's "whenAdded" callback function
--- @return (bool) True if the stored stack at the given ID exists and if the current stack is empty, otherwise false
 
 --- Restores a saved stack from storage.
 --- This will call the loaded scenes' "whenAdded" methods.
@@ -127,6 +116,9 @@ end
 ---@param scene table Table containing attributes and callback functions of the scene.
 ---@vararg any Values passed to the `load` callback function of this scene.
 function sceneMan:newScene (name, scene, ...)
+    assert (type (name) == "string", "Provided scene name is not a string")
+    assert (self.scenes[name] == nil, "A scene with the name '" .. name .. "' has already been defined")
+
     self.scenes[name] = scene
     self.scenes[name].name = name
     if self.scenes[name].load ~= nil then
@@ -152,10 +144,32 @@ function sceneMan:getStackSize ()
     return #self.stack
 end
 
---- Gets the name of the current topmost scene on the stack. Returns nil if no scenes exist in it (ignores frozen buffer).
----@return string|nil sceneName Name of topmost scene or nil if empty.
+--- Gets the name of the current topmost scene on the stack.
+--- This will ignore the frozen buffer.
+---@return string|nil sceneName Name of topmost scene or nil if the stack is empty.
 function sceneMan:getCurrentScene ()
     return (#self.stack >= 1) and self.stack[#self.stack].name or nil
+end
+
+--- Gets the name of the scene at the provided index in the stack.
+--- This will ignore the frozen buffer.
+---@param index integer The index of the scene.
+---@return string|nil sceneName Name of topmost scene or nil if the stack is empty.
+function sceneMan:getSceneAt (index)
+    return self.stack[index].name
+end
+
+--- Gets the index of a scene in the stack matching the provided name.
+--- This will ignore the frozen buffer.
+--- If the scene is present multiple times in the stack, this function will only return the index of the first scene found, starting from the top of the stack.
+---@param sceneName string The name of the desired scene.
+---@return integer|nil index Name of the scene at the given index or nil if the stack is empty.
+function sceneMan:getSceneIndex (sceneName)
+    for i = #self.stack, 1, -1 do
+        if self.stack[i].name == sceneName then
+            return i
+        end
+    end
 end
 
 --- Pushes a registered scene onto the top of the stack and calls its `whenAdded` method.
@@ -195,7 +209,7 @@ end
 ---@param name string The name of the scene to add to the stack.
 ---@param index integer The position within the stack that the scene should be inserted at.
 ---@vararg any Values passed to the `whenAdded` callback function of this scene.
----@return boolean success True if the operation was successful, false otherwise.
+---@return boolean success True if the scene was successfully inserted, false otherwise.
 function sceneMan:insert (name, index, ...)
     local stack = getStack ()
     
@@ -204,10 +218,11 @@ function sceneMan:insert (name, index, ...)
     end
     
     if index >= 1 and index <= #stack then
-        table.insert (stack, index, name)
+        table.insert (stack, index, self.scenes[name])
         if self.scenes[name].whenAdded ~= nil then
             self.scenes[name]:whenAdded (...)
         end
+
         return true
     end
     return false
@@ -215,19 +230,37 @@ end
 
 --- Removes a scene from the stack at a certain index.
 --- This will call the scene's `whenRemoved` method.
----@param index integer The position within the stack that the scene should be removed at.
+--- If a scene is present multiple times in the stack and a name is provided for the key, the first scene found starting at the top of the stack will be removed.
+---@param key integer|string The position within the stack or the name of a scene that should be removed from the stack.
 ---@vararg any Values passed to the `whenRemoved` callback function of this scene.
----@return boolean success True if the operation was successful, false otherwise.
-function sceneMan:remove (index, ...)
+---@return boolean success True if a scene was removed, false if the operation failed or if the scene with the provided name was not found.
+function sceneMan:remove (key, ...)
     local stack = getStack ()
-    
-    if index >= 1 and index <= #stack then
-        local temp = stack[index]
-        table.remove (stack, index)
-        if temp.whenRemoved ~= nil then
-            temp:whenRemoved (...)
+    local index
+
+    if type (key) == "number" then
+        index = key
+
+        if index < 1 and index > #stack then
+            return false
         end
+    elseif type (key) == "string" then
+        index = self:getSceneIndex (key)
+
+        if index == nil then
+            return false
+        end
+    else
+        assert ("Provided scene key is not a string or integer index")
     end
+    
+    local temp = stack[index]
+    table.remove (stack, index)
+    if temp.whenRemoved ~= nil then
+        temp:whenRemoved (...)
+    end
+
+    return true
 end
 
 --- Removes all scenes from the stack, starting at the top.
