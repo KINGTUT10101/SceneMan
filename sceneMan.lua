@@ -15,7 +15,7 @@ local sceneMan = {
     ---@type integer The highest level of the stack that is locked.
     lockLevel = 0,
     ---@type string The version of Scene Manager being used.
-    version = "1.4.1",
+    version = "1.4.2",
 }
 
 --- Returns either the buffer or the stack based on the value of `sceneMan.frozen`.
