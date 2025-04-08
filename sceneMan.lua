@@ -51,11 +51,6 @@ function sceneMan:unfreeze ()
 end
 
 --- Saves the current contents of the stack so it can be restored later.
--- This will save the frozen buffer if the stack is frozen
--- This will not modify the current stack in any way
--- @param id (string) A unique ID that will be used to identify the saved stack. It will override anything currently stored at that ID
-
---- Saves the current contents of the stack so it can be restored later.
 --- This will save the frozen buffer if the stack is frozen.
 --- This will not modify the current stack in any way.
 ---@param id string A unique ID to identify the saved stack. Overrides any existing entry at this ID.
@@ -69,12 +64,6 @@ function sceneMan:saveStack (id)
 
     self.saved[id] = savedStack
 end
-
---- Loads a stack from the saved table.
--- This will call the loaded scenes' "whenAdded" methods
--- @param id (string) A unique ID that identifies the stack that should be restored
--- @param ... (varargs) A list of values that will be passed to the event's "whenAdded" callback function
--- @return (bool) True if the stored stack at the given ID exists and if the current stack is empty, otherwise false
 
 --- Restores a saved stack from storage.
 --- This will call the loaded scenes' "whenAdded" methods.
