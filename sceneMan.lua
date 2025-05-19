@@ -212,12 +212,14 @@ end
 ---@return boolean success True if the scene was successfully inserted, false otherwise.
 function sceneMan:insert (name, index, ...)
     local stack = getStack ()
+
+    index = math.min (index, #stack + 1)
     
     if self.scenes[name] == nil then
         error ('Attempt to enter undefined scene "' .. name .. '"')
     end
     
-    if index >= 1 and index <= #stack then
+    if index >= 1 then
         table.insert (stack, index, self.scenes[name])
         if self.scenes[name].whenAdded ~= nil then
             self.scenes[name]:whenAdded (...)
