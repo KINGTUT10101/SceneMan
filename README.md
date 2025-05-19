@@ -62,7 +62,7 @@ sceneMan.saved = {} -- Stores saved stacks so they can be restored later
 sceneMan.buffer = {} -- Stores the scene stack when the original scene stack is disabled
 sceneMan.frozen = false -- If true, the buffer will be used instead of the original stack
 lockLevel = 0 -- They highest level of the stack that is locked
-sceneMan.version = "1.4.2" -- The used version of Scene Man
+sceneMan.version = "1.4.3" -- The used version of Scene Man
 ```
 
 #### Methods:
