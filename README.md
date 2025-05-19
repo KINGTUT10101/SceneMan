@@ -47,6 +47,8 @@ See the [Freezing](https://github.com/KINGTUT10101/SceneMan/wiki/Freezing) page 
     *   Added sceneMan:getSceneIndex method for getting the index of a specific scene in the stack.
     *   Fixed a bug with the sceneMan:insert method that inserted the scene's name instead of its table.
     *   Updated sceneMan:remove method so users can specify what scene they'd like to remove using either their index or their name.
+*   Version 1.4.3:
+    *   Fixed a bug with the insert method where it would fail if the stack was empty.
 
 ### Documentation:
 
