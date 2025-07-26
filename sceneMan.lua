@@ -15,7 +15,7 @@ local sceneMan = {
     ---@type integer The highest level of the stack that is locked.
     lockLevel = 0,
     ---@type string The version of Scene Manager being used.
-    version = "1.4.3",
+    version = "1.4.2",
 }
 
 --- Returns either the buffer or the stack based on the value of `sceneMan.frozen`.
@@ -149,6 +149,19 @@ end
 ---@return string|nil sceneName Name of topmost scene or nil if the stack is empty.
 function sceneMan:getCurrentScene ()
     return (#self.stack >= 1) and self.stack[#self.stack].name or nil
+end
+
+--- Get the names of the scenes in the current stack
+--- @return table<string> sceneNames An array of scene names
+function sceneMan:getCurrentStack ()
+    local stack = getStack ()
+    local sceneNames = {}
+
+    for i = 1, stack do
+        sceneNames[i] = stack[i].name
+    end
+
+    return sceneNames
 end
 
 --- Gets the name of the scene at the provided index in the stack.
