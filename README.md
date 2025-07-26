@@ -49,7 +49,7 @@ See the [Freezing](https://github.com/KINGTUT10101/SceneMan/wiki/Freezing) page 
     *   Updated sceneMan:remove method so users can specify what scene they'd like to remove using either their index or their name.
 *   Version 1.4.3:
     *   Fixed a bug with the insert method where it would fail if the stack was empty.
-*   Version 1.5:
+*   Version 1.5.0:
     *   Added the getCurrentStack method, which returns the list of scene names currently in the stack.
     *   Removed the version string.
 
