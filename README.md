@@ -50,7 +50,8 @@ See the [Freezing](https://github.com/KINGTUT10101/SceneMan/wiki/Freezing) page 
 *   Version 1.4.3:
     *   Fixed a bug with the insert method where it would fail if the stack was empty.
 *   Version 1.5:
-    *   Add the getCurrentStack method, which returns the list of scene names currently in the stack.
+    *   Added the getCurrentStack method, which returns the list of scene names currently in the stack.
+    *   Removed the version string.
 
 ### Documentation:
 
