@@ -49,6 +49,8 @@ See the [Freezing](https://github.com/KINGTUT10101/SceneMan/wiki/Freezing) page 
     *   Updated sceneMan:remove method so users can specify what scene they'd like to remove using either their index or their name.
 *   Version 1.4.3:
     *   Fixed a bug with the insert method where it would fail if the stack was empty.
+*   Version 1.5:
+    *   Add the getCurrentStack method, which returns the list of scene names currently in the stack.
 
 ### Documentation:
 
@@ -62,7 +64,6 @@ sceneMan.saved = {} -- Stores saved stacks so they can be restored later
 sceneMan.buffer = {} -- Stores the scene stack when the original scene stack is disabled
 sceneMan.frozen = false -- If true, the buffer will be used instead of the original stack
 lockLevel = 0 -- They highest level of the stack that is locked
-sceneMan.version = "1.4.3" -- The used version of Scene Man
 ```
 
 #### Methods:
@@ -93,6 +94,10 @@ sceneMan:getCurrentScene ()
 ---@param index integer The index of the scene.
 ---@return string|nil sceneName Name of topmost scene or nil if the stack is empty.
 sceneMan:getSceneAt (index)
+
+--- Get the names of the scenes in the current stack
+--- @return table<string> sceneNames An array of scene names
+function sceneMan:getCurrentStack ()
 
 --- Gets the index of a scene in the stack matching the provided name.
 --- This will ignore the frozen buffer.
