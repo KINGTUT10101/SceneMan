@@ -339,4 +339,15 @@ function sceneMan:event (eventName, ...)
     end
 end
 
+--- Fires an event for all registered scenes, regardless of whether they are on the stack or not.
+---@param eventName string The name of the event
+---@vararg any A series of values that will be passed to the scenes' event callbacks
+function sceneMan:globalEvent (eventName, ...)
+    for sceneName, scene in pairs (self.scenes) do
+        if scene[eventName] ~= nil then
+            scene[eventName] (scene, ...)
+        end
+    end
+end
+
 return sceneMan

@@ -52,6 +52,8 @@ See the [Freezing](https://github.com/KINGTUT10101/SceneMan/wiki/Freezing) page 
 *   Version 1.5.0:
     *   Added the getCurrentStack method, which returns the list of scene names currently in the stack.
     *   Removed the version string.
+*   Version 1.6.0:
+    *   Added the globalEvent method, which allows users to fire an event for all registered scenes, not just the ones on the stack.
 
 ### Documentation:
 
@@ -188,4 +190,9 @@ sceneMan:restoreStack (id, ...)
 --- This will not *delete* the scenes in the stack.
 ---@param id string A unique ID identifying the saved stack to delete.
 sceneMan:deleteStack (id)
+
+--- Fires an event for all registered scenes, regardless of whether they are on the stack or not.
+-- @param eventName (string) The name of the event
+-- @param ... (varargs) A series of values that will be passed to the scenes' event callbacks
+sceneMan:globalEvent (eventName, ...)
 ```
